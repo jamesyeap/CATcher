@@ -346,6 +346,15 @@ export class GithubService {
     );
   }
 
+  /**
+   * Removes a label from an issue.
+   * @param id - The issue id
+   * @param labelName - The name of the label to be removed
+   */
+  removeLabelFromIssue(id: number, labelName: string): void {
+    octokit.issues.removeLabel({ owner: ORG_NAME, repo: REPO, issue_number: id, name: labelName });
+  }
+
   updateIssueComment(issueComment: IssueComment): Observable<GithubComment> {
     return from(
       octokit.issues.updateComment({ owner: ORG_NAME, repo: REPO, comment_id: issueComment.id, body: issueComment.description })
