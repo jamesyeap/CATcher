@@ -288,6 +288,19 @@ export class LabelService {
         throw new Error('Unexpected error: the repo has multiple labels with the same name ' + label.getFormattedName());
       }
     });
+
+    actualLabels.forEach((label) => {
+      // Finds a required label with the same name as an existing label in the repository.
+      const nameMatchedLabels: Label[] = requiredLabels.filter(
+        (requiredLabel) => requiredLabel.getFormattedName() === label.getFormattedName()
+      );
+
+      // Delete existing label
+      // (Could not find a required label with the same name & category - existing label is not found in the list of required labels)
+      if (nameMatchedLabels.length === 0) {
+        this.githubService.deleteLabel(label.getFormattedName());
+      }
+    });
   }
 
   /**
